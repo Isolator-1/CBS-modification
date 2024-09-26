@@ -1,0 +1,24 @@
+# graphs_generation.yaml
+seed: null
+num_environments: 1000
+num_clients_list: [40, 70]
+num_servers_list: [10, 30]
+protocols: ["SMB", "RDP", "HTTP"]
+
+inter:
+  alpha: [1, 200]
+  beta: [1000, 5000]
+
+intra:
+  alpha: [1, 200]
+  beta: [1000, 5000]
+
+tolerance: 0.001
+cached_rdp_password_probability_list: [0.4, 0.8]
+cached_smb_password_probability_list: [0.4, 0.8]
+cached_accessed_network_shares_probability_list: [0.2, 0.5]
+cached_password_has_changed_probability_list: [0.01, 0.1]
+traceroute_discovery_probability_list: [0.3, 0.7]
+probability_two_nodes_use_same_password_to_access_given_resource_list: [0.1, 0.33]
+firewall_rule_incoming_probability_list: [0.0, 0.2] # probability there will be an incoming BLOCK rule on each protocol we are LISTENING on
+firewall_rule_outgoing_probability_list: [0.0, 0.2] # probability there will be an outgoing BLOCK rule on each protocol

@@ -1,0 +1,85 @@
+dqn:
+  learning_rate:
+      type: "categorical"
+      values: [0.0001, 0.001, 0.01]
+  batch_size:
+      type: "categorical"
+      values: [64, 128, 256]
+  gamma:
+      type: "categorical"
+      values: [0.9, 0.95, 0.99]
+  buffer_size:
+      type: "categorical"
+      values: [5000, 10000, 20000]
+  tau:
+      type: "categorical"
+      values: [0.1, 0.5, 1.0]
+
+ppo:
+  learning_rate:
+    type: "categorical"
+    values: [ 0.0001, 0.001, 0.01 ]
+  batch_size:
+    type: "categorical"
+    values: [ 64, 128, 256 ]
+  clip_range:
+    type: "categorical"
+    values: [ 0.1, 0.2, 0.3 ]
+  gamma:
+    type: "categorical"
+    values: [ 0.9, 0.95, 0.99 ]
+  n_steps:
+    type: "categorical"
+    values: [ 1024, 2048, 4096 ]
+  max_grad_norm:
+    type: "categorical"
+    values: [ 0.3, 0.5, 0.7 ]
+  ent_coef:
+    type: "categorical"
+    values: [ 0.01, 0.1, 0.2 ]
+  vf_coef:
+    type: "categorical"
+    values: [ 0.5, 1.0, 1.5 ]
+
+trpo:
+  learning_rate:
+      type: "categorical"
+      values: [ 0.0001, 0.001, 0.01 ]
+  batch_size:
+      type: "categorical"
+      values: [ 64, 128, 256 ]
+  gamma:
+      type: "categorical"
+      values: [ 0.9, 0.95, 0.99 ]
+  target_kl:
+      type: "categorical"
+      values: [ 0.01, 0.05, 0.1 ]
+  n_steps:
+      type: "categorical"
+      values: [ 1024, 2048, 4096 ]
+  gae_lambda:
+      type: "categorical"
+      values: [ 0.9, 0.95, 0.99 ]
+
+a2c:
+    learning_rate:
+        type: "categorical"
+        values: [ 0.0001, 0.001, 0.01 ]
+    gamma:
+        type: "categorical"
+        values: [ 0.9, 0.95, 0.99 ]
+    n_steps:
+        type: "categorical"
+        values: [ 5, 10, 20 ]
+    ent_coef:
+        type: "categorical"
+        values: [ 0.01, 0.1, 0.2 ]
+    vf_coef:
+        type: "categorical"
+        values: [ 0.5, 1.0, 1.5 ]
+    max_grad_norm:
+        type: "categorical"
+        values: [ 0.3, 0.5, 0.7 ]
+    gae_lambda:
+        type: "categorical"
+        values: [ 0.9, 0.95, 0.99 ]

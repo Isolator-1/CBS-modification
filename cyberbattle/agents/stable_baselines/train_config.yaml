@@ -1,0 +1,227 @@
+# train_config.yaml
+
+num_environments: 100
+num_clients_list: [40, 70]
+num_servers_list: [10, 30]
+episode_iterations: 500
+winning_reward: 1000
+train_iterations: 250000
+switch_interval: 50 # training set, in episodes
+checkpoints_save_freq: 20000
+absolute_reward: False
+losing_reward: 0
+policy_kwargs:
+  net_arch: [256, 128, 64]
+  activation_fn: LeakyReLU
+  optimizer_class: Adam
+  optimizer_kwargs:
+    eps: 0.000001
+    weight_decay: 0.0
+    amsgrad: False
+  lstm_hidden_size: 32
+  n_lstm_layers: 1
+random_mode: normal # normal, probabilistic
+partial_observability: True
+random_starter_node: null # leave null in case you want to use the default one for each game
+stop_at_goal_reached: True # used only for the random environment
+norm_obs: True
+norm_reward: True
+move_target_through_owned: False
+
+# defender
+defender_agent: null #ScanAndReimageCompromisedMachines,ExternalRandomEvents
+defender_sla_min: 0 # minimum SLA for defender, senseless for now (keep to 0)
+defender_eviction_goal: True # if True, defender will try to evict all the nodes owned from the network
+random_event_probability: 0.1
+detect_probability: 0.2
+scan_capacity: 3
+scan_frequency: 3
+
+
+reward_coefficients:
+  value_coefficient: 3.0
+  cost_coefficient: 1.0
+  property_discovered_coefficient: 2.0
+  credential_discovered_coefficient: 3.0
+  node_discovered_coefficient: 5.0
+  first_success_attack_coefficient: 7.0
+  moved_source_node_unlock: 0.0
+penalties:
+  suspiciousness: -5.0 # penalty for generic suspiciousness
+  scanning_unopen_port: -10.0 # penalty for attempting a connection to a port that was not open
+  repeat: -1 # penalty for repeating the same exploit attempt
+  local_exploit_failed: -20
+  failed_remote_exploit: -50
+  machine_not_running: 0 # penalty for attempting to connect or execute an action on a node that's not in running state
+  wrong_password: -10 # penalty for attempting a connection with an invalid password
+  blocked_by_local_firewall: -10 # traffic blocked by outgoing rule in a local firewall
+  blocked_by_remote_firewall: -10 # traffic blocked by incoming rule in a local firewall
+  invalid_action: -1  # invalid action (e.g., running an attack from a node that's not owned)
+  invalid_movement: -20
+  movement: -5
+  connection_to_same_node: -50
+
+# CyberBattleChain
+optimal_num_iterations: True
+tolerance_factor: 1.0
+
+# CyberBattleRandom
+smart_winning_reward: True
+isolation_filter_threshold: 0.1 # if ratio of reachable nodes below this threshold, the node is considered isolated
+owned_threshold_winning_reward: 1.0
+knows_reachability_range: [0.8, 1.0]
+knows_connectivity_range: [0.8, 1.0]
+access_reachability_range: [0.8, 1.0]
+access_connectivity_range: [0.8, 1.0]
+tolerance: 0.001
+cached_rdp_password_probability_list: [0.5, 0.8]
+cached_smb_password_probability_list: [0.5, 0.8]
+cached_accessed_network_shares_probability_list: [0.2, 0.5]
+cached_password_has_changed_probability_list: [0.01, 0.1]
+traceroute_discovery_probability_list: [0.4, 0.7]
+probability_two_nodes_use_same_password_to_access_given_resource_list: [0.2, 0.3]
+firewall_rule_incoming_probability_list: [0.0, 0.1] # probability there will be an incoming BLOCK rule on each protocol we are LISTENING on
+firewall_rule_outgoing_probability_list: [0.0, 0.1] # probability there will be an outgoing BLOCK rule on each protocol
+
+# NEW
+protocols: ["SMB", "RDP", "HTTP"]
+
+inter:
+  alpha: [10,50]
+  beta: [500, 1000]
+
+intra:
+  alpha: [1,50]
+  beta: [500,1000]
+
+#CyberBattleAD
+num_users_list: [50, 100]
+admin_probability_list: [0.5, 0.85]
+
+# Benchmark solution
+benchmark_config:
+  maximum_node_count: 302
+  maximum_total_credentials: 600
+  maximum_discoverable_credentials_per_action: 50000
+
+# Holdout method
+validation_ratio: 0.25
+test_ratio: 0.2
+
+# Validation set callback
+val_switch_interval: 5 # in episodes
+val_freq: 10000 # timesteps after which starts validation phase
+n_val_episodes: 20 # how many episodes to run overall regardless of the switch interval
+
+
+# Visible features for the two implementations
+visible_local_node_features: ['firewall_config_array', 'listening_services_array', 'privilege_level', 'property_array', 'reimageable', 'status', 'node_value', 'vulnerabilities_array']
+#visible_local_node_features: ['listening_services_array', 'vulnerabilities_array']
+# 'sla_weight',
+
+
+visible_local_global_features: ['discovered_nodes_not_owned_length', 'owned_nodes_length', 'number_discovered_credentials', 'average_discovered_value', 'owned_local_vulnerabilities_not_exploited', 'discovered_accessible_ports']
+# 'customer_data_found', 'escalation', 'lateral_move', 'number_discovered_credentials', 'number_discovered_nodes', 'probe_result'
+visible_benchmark_node_features: ["success_action_count", "failed_action_count", "active_node_property", "active_node_age"]
+# "actions_tried_at_node", "active_node_id"
+visible_benchmark_global_features: ["discovered_not_owned_node_count"]
+# "discovered_node_count", "owned_node_count", "discovered_ports", "discovered_ports_counts", "discovered_ports_sliding", "discovered_credential_count", "discovered_nodeproperties_sliding"
+
+algo:
+  dqn:
+    learning_rate: 0.0001
+    learning_rate_type: constant # constant, linear
+    learning_rate_final: 0.00001 # used only in linear case
+    buffer_size: 20000 # replay buffer size
+    learning_starts: 50000 # number of samples in the buffer needed to start training
+    batch_size: 64
+    gamma: 0.9 # discount factor
+    tau: 0.5
+    train_freq: 4 # how often to train the network
+    gradient_steps: 1 # how many gradient steps to perform after each train_freq
+    max_grad_norm: 10 # max gradient norm
+    target_update_interval: 10000 # in iterations
+    exploration_fraction: 0.5 # how many of the iterations should include epsilon greedy strategy
+    exploration_final_eps: 0.05
+  a2c:
+    learning_rate: 0.0001
+    learning_rate_type: constant # constant, linear
+    learning_rate_final: 0.00001 # used only in linear case
+    gamma: 0.99
+    gae_lambda: 0.95
+    max_grad_norm: 0.5
+    rms_prop_eps: 0.00001
+    use_rms_prop: True
+    use_sde: False
+    sde_sample_freq: -1
+    normalize_advantage: True
+    n_steps: 10
+    ent_coef: 0.2
+    vf_coef: 1.0
+  ppo:
+    n_steps: 2048
+    ent_coef: 0.1
+    vf_coef: 0.5
+    learning_rate: 0.0001
+    learning_rate_type: constant # constant, linear
+    learning_rate_final: 0.00001 # used only in linear case
+    batch_size: 256
+    n_epochs: 20
+    gamma: 0.9
+    gae_lambda: 0.95
+    clip_range: 0.2
+    normalize_advantage: True
+    max_grad_norm: 0.7
+  recurrent_ppo:
+    n_steps: 2048
+    ent_coef: 0.1
+    vf_coef: 0.5
+    learning_rate: 0.0001
+    learning_rate_type: constant # constant, linear
+    learning_rate_final: 0.00001 # used only in linear case
+    batch_size: 256
+    n_epochs: 20
+    gamma: 0.9
+    gae_lambda: 0.95
+    clip_range: 0.2
+    normalize_advantage: True
+    max_grad_norm: 0.7
+  trpo:
+    learning_rate_type: constant # constant, linear
+    learning_rate: 0.0001
+    n_steps: 1024
+    batch_size: 256
+    gamma: 0.99
+    cg_max_steps: 15
+    cg_damping: 0.1
+    line_search_shrinking_factor: 0.8
+    line_search_max_iter: 10
+    n_critic_updates: 10
+    gae_lambda: 0.95
+    use_sde: False
+    sde_sample_freq: -1
+    rollout_buffer_class: null
+    rollout_buffer_kwargs: null
+    normalize_advantage: True
+    target_kl: 0.01
+    sub_sampling_factor: 1
+    stats_window_size: 100
+  qr_dqn:
+    learning_rate_type: constant # constant, linear
+    learning_rate:  0.0001
+    buffer_size: 20000
+    learning_starts: 100
+    batch_size: 64
+    tau: 0.5
+    gamma: 0.9
+    train_freq: 4
+    gradient_steps: 1
+    replay_buffer_class: null
+    replay_buffer_kwargs: null
+    optimize_memory_usage: False
+    target_update_interval: 10000
+    exploration_fraction: 0.5
+    exploration_initial_eps: 1
+    exploration_final_eps: 0.05
+    max_grad_norm: null
+    stats_window_size: 100
