@@ -39,6 +39,8 @@ from cyberbattle.simulation.model import (
 )
 from . import model
 
+from cyberbattle.singleattack.singleattack import attack
+
 
 logger = logging.getLogger(__name__)
 Reward = float
@@ -99,7 +101,8 @@ class AgentActions:
                     'blocked_by_remote_firewall': -10, # traffic blocked by incoming rule in a local firewall
                     'invalid_action': -1,  # invalid action (e.g., running an attack from a node that's not owned)
                     'invalid_movement': -50,
-                    'movement': -10
+                    'movement': -10,
+                    "ExploitationFailed":-1,
                 },
                  throws_on_invalid_actions=True,
                  value_coefficient=1.0,
@@ -584,6 +587,19 @@ class AgentActions:
                 print("Reward (property discovered): +=", self.property_discovered_coefficient, "*", newly_discovered_properties)
             reward += self.property_discovered_coefficient*newly_discovered_properties
 
+        elif isinstance(outcome, model.CVEExploitation):
+            result = attack()
+            if result:
+                reward += 100
+                if self.verbose:
+                    print("Reward CVE exploitation : += 100")
+            else:
+                reward += 1
+                if self.verbose:
+                    print("Reward CVE exploitation : += 1")
+                return False, ActionResult(reward=self.penalty["ExploitationFailed"], outcome=outcome)
+
+
         if node_id not in self._discovered_nodes:
             self._discovered_nodes[node_id] = NodeTrackingInformation()
 
@@ -690,6 +706,8 @@ class AgentActions:
         if succeeded:
             #print("Succeeded remote vulnerability")
             self.__mark_nodevulnerabilities_as_discovered(target_node_id, [vulnerability_id])
+            if vulnerability_id == 'CVE-Exploitation':
+                self.__mark_node_as_owned(target_node_id)
         else:
             #print("Remote vulnerability did not work!")
             self.__mark_nodeabsentvulnerabilities_as_discovered(target_node_id, [vulnerability_id])

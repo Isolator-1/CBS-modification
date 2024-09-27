@@ -24,7 +24,8 @@ ENV_IDENTIFIERS = Identifiers(
         'ScanWindowsCredentialManagerForSMB'
     ],
     remote_vulnerabilities=[
-        'Traceroute'
+        'Traceroute',
+        'CVE-Exploitation'
     ]
 )
 
@@ -302,6 +303,14 @@ def cyberbattle_model_from_traffic_graph(
                 reward_string="Discovered new network nodes via traceroute",
                 cost=5.0
             )
+        
+        library['CVE-Exploitation'] = m.VulnerabilityInfo(
+            description = "Exploit with metasploit",
+            type = m.VulnerabilityType.REMOTE,
+            outcome = m.CVEExploitation(),
+            reward_string = 'CVE Exploitation Successfully',
+            cost = 10.0
+        )
 
         return library
 

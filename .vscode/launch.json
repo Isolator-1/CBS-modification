@@ -8,17 +8,18 @@
             "name": "Python Debugger: Current File with Arguments",
             "type": "debugpy",
             "request": "launch",
-            "program": "~/CBS-modification/cyberbattle/agents/stable_baselines/train_agent.py",
+            "program": "${workspaceFolder}/cyberbattle/agents/stable_baselines/train_agent.py",
             "console": "integratedTerminal",
             "python" : "${command:python.interpreterPath}",
             "args": [
                 "--environment", "random",
                 "--switch",
-                "--load_nets",  "group_4", 
+                //"--load_nets",  "group_4", 
                 "--load_seeds", "seeds_20",
                 "--algorithm", "dqn",
-                "--name", "randomX_ALGORITHM",
-            ]
+                "--name", "groupCVE",
+            ],
+            "cwd": "${workspaceFolder}/cyberbattle/agents/stable_baselines/"
         }
     ]
 }

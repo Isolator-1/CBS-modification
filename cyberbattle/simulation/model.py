@@ -188,6 +188,9 @@ class LeakedNodesId(VulnerabilityOutcome):
     def __init__(self, nodes: List[NodeID]):
         self.nodes = nodes
 
+class CVEExploitation(VulnerabilityOutcome):
+    """Exploit a CVE"""
+
 
 class Movement(VulnerabilityOutcome):
     """A movement of the view"""
@@ -199,13 +202,13 @@ class Movement(VulnerabilityOutcome):
 
 VulnerabilityOutcomes = Union[
     LeakedCredentials, LeakedNodesId, PrivilegeEscalation, AdminEscalation,
-    SystemEscalation, CustomerData, LateralMove, ExploitFailed]
+    SystemEscalation, CustomerData, LateralMove, ExploitFailed, CVEExploitation]
 
 
 def map_outcome_to_index(outcome):
     outcomes = [
         LeakedCredentials, LeakedNodesId, PrivilegeEscalation, AdminEscalation,
-        SystemEscalation, CustomerData, LateralMove, ExploitFailed, ProbeSucceeded, ProbeFailed]
+        SystemEscalation, CustomerData, LateralMove, ExploitFailed, ProbeSucceeded, ProbeFailed, CVEExploitation]
     outcome_to_index = {cls: idx for idx, cls in enumerate(outcomes)}
     return outcome_to_index.get(outcome.__class__)
 

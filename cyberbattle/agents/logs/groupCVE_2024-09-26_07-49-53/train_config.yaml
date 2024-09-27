@@ -1,0 +1,273 @@
+absolute_reward: false
+access_connectivity_range:
+- 0.8
+- 1.0
+access_reachability_range:
+- 0.8
+- 1.0
+admin_probability_list:
+- 0.5
+- 0.85
+algo:
+  a2c:
+    ent_coef: 0.2
+    gae_lambda: 0.95
+    gamma: 0.99
+    learning_rate: 0.0001
+    learning_rate_final: 1.0e-05
+    learning_rate_type: constant
+    max_grad_norm: 0.5
+    n_steps: 10
+    normalize_advantage: true
+    rms_prop_eps: 1.0e-05
+    sde_sample_freq: -1
+    use_rms_prop: true
+    use_sde: false
+    vf_coef: 1.0
+  dqn:
+    batch_size: 64
+    buffer_size: 20000
+    exploration_final_eps: 0.05
+    exploration_fraction: 0.5
+    gamma: 0.9
+    gradient_steps: 1
+    learning_rate: 0.0001
+    learning_rate_final: 1.0e-05
+    learning_rate_type: constant
+    learning_starts: 50000
+    max_grad_norm: 10
+    target_update_interval: 10000
+    tau: 0.5
+    train_freq: 4
+  ppo:
+    batch_size: 256
+    clip_range: 0.2
+    ent_coef: 0.1
+    gae_lambda: 0.95
+    gamma: 0.9
+    learning_rate: 0.0001
+    learning_rate_final: 1.0e-05
+    learning_rate_type: constant
+    max_grad_norm: 0.7
+    n_epochs: 20
+    n_steps: 2048
+    normalize_advantage: true
+    vf_coef: 0.5
+  qr_dqn:
+    batch_size: 64
+    buffer_size: 20000
+    exploration_final_eps: 0.05
+    exploration_fraction: 0.5
+    exploration_initial_eps: 1
+    gamma: 0.9
+    gradient_steps: 1
+    learning_rate: 0.0001
+    learning_rate_type: constant
+    learning_starts: 100
+    max_grad_norm: null
+    optimize_memory_usage: false
+    replay_buffer_class: null
+    replay_buffer_kwargs: null
+    stats_window_size: 100
+    target_update_interval: 10000
+    tau: 0.5
+    train_freq: 4
+  recurrent_ppo:
+    batch_size: 256
+    clip_range: 0.2
+    ent_coef: 0.1
+    gae_lambda: 0.95
+    gamma: 0.9
+    learning_rate: 0.0001
+    learning_rate_final: 1.0e-05
+    learning_rate_type: constant
+    max_grad_norm: 0.7
+    n_epochs: 20
+    n_steps: 2048
+    normalize_advantage: true
+    vf_coef: 0.5
+  trpo:
+    batch_size: 256
+    cg_damping: 0.1
+    cg_max_steps: 15
+    gae_lambda: 0.95
+    gamma: 0.99
+    learning_rate: 0.0001
+    learning_rate_type: constant
+    line_search_max_iter: 10
+    line_search_shrinking_factor: 0.8
+    n_critic_updates: 10
+    n_steps: 1024
+    normalize_advantage: true
+    rollout_buffer_class: null
+    rollout_buffer_kwargs: null
+    sde_sample_freq: -1
+    stats_window_size: 100
+    sub_sampling_factor: 1
+    target_kl: 0.01
+    use_sde: false
+algorithm: dqn
+benchmark_config:
+  maximum_discoverable_credentials_per_action: 50000
+  maximum_node_count: 302
+  maximum_total_credentials: 600
+cached_accessed_network_shares_probability_list:
+- 0.2
+- 0.5
+cached_password_has_changed_probability_list:
+- 0.01
+- 0.1
+cached_rdp_password_probability_list:
+- 0.5
+- 0.8
+cached_smb_password_probability_list:
+- 0.5
+- 0.8
+checkpoints_save_freq: 20000
+config: train_config.yaml
+defender_agent: null
+defender_eviction_goal: true
+defender_sla_min: 0
+detect_probability: 0.2
+early_stopping: 0
+environment: random
+episode_iterations: 500
+firewall_rule_incoming_probability_list:
+- 0.0
+- 0.1
+firewall_rule_outgoing_probability_list:
+- 0.0
+- 0.1
+inter:
+  alpha:
+  - 10
+  - 50
+  beta:
+  - 500
+  - 1000
+intra:
+  alpha:
+  - 1
+  - 50
+  beta:
+  - 500
+  - 1000
+isolation_filter_threshold: 0.1
+knows_connectivity_range:
+- 0.8
+- 1.0
+knows_reachability_range:
+- 0.8
+- 1.0
+load_envs: false
+load_nets: false
+load_seeds: seeds_20
+losing_reward: 0
+move_target_through_owned: false
+n_val_episodes: 20
+name: groupCVE
+norm_obs: true
+norm_reward: true
+num_clients_list:
+- 40
+- 70
+num_environments: 100
+num_runs: 20
+num_servers_list:
+- 10
+- 30
+num_users_list:
+- 50
+- 100
+optimal_num_iterations: true
+owned_threshold_winning_reward: 1.0
+partial_observability: true
+penalties:
+  blocked_by_local_firewall: -10
+  blocked_by_remote_firewall: -10
+  connection_to_same_node: -50
+  failed_remote_exploit: -50
+  invalid_action: -1
+  invalid_movement: -20
+  local_exploit_failed: -20
+  machine_not_running: 0
+  movement: -5
+  repeat: -1
+  scanning_unopen_port: -10.0
+  suspiciousness: -5.0
+  wrong_password: -10
+policy_kwargs:
+  activation_fn: LeakyReLU
+  lstm_hidden_size: 32
+  n_lstm_layers: 1
+  net_arch:
+  - 256
+  - 128
+  - 64
+  optimizer_class: Adam
+  optimizer_kwargs:
+    amsgrad: false
+    eps: 1.0e-06
+    weight_decay: 0.0
+probability_two_nodes_use_same_password_to_access_given_resource_list:
+- 0.2
+- 0.3
+protocols:
+- SMB
+- RDP
+- HTTP
+random_agent: false
+random_event_probability: 0.1
+random_mode: normal
+random_starter_node: null
+reward_coefficients:
+  cost_coefficient: 1.0
+  credential_discovered_coefficient: 3.0
+  first_success_attack_coefficient: 7.0
+  moved_source_node_unlock: 0.0
+  node_discovered_coefficient: 5.0
+  property_discovered_coefficient: 2.0
+  value_coefficient: 3.0
+scan_capacity: 3
+scan_frequency: 3
+seed: 512
+smart_winning_reward: true
+static_seed: false
+stop_at_goal_reached: true
+switch: true
+switch_interval: 50
+test_ratio: 0.2
+tolerance: 0.001
+tolerance_factor: 1.0
+traceroute_discovery_probability_list:
+- 0.4
+- 0.7
+train_iterations: 250000
+val_freq: 10000
+val_switch_interval: 5
+validation_ratio: 0.25
+visible_benchmark_global_features:
+- discovered_not_owned_node_count
+visible_benchmark_node_features:
+- success_action_count
+- failed_action_count
+- active_node_property
+- active_node_age
+visible_local_global_features:
+- discovered_nodes_not_owned_length
+- owned_nodes_length
+- number_discovered_credentials
+- average_discovered_value
+- owned_local_vulnerabilities_not_exploited
+- discovered_accessible_ports
+visible_local_node_features:
+- firewall_config_array
+- listening_services_array
+- privilege_level
+- property_array
+- reimageable
+- status
+- node_value
+- vulnerabilities_array
+winning_reward: 1000
+yaml: false

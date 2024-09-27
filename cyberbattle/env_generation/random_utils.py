@@ -11,7 +11,7 @@ from cyberbattle._env.local.cyberbattle_moving_env import AttackerGoal
 
 # creation of CyberBattleRandom network based on beta distribution and number of nodes
 def create_default_random_network(n_clients, n_servers, alpha, beta, seed = None, **kwargs):
-    print(alpha, beta)
+    # print(alpha, beta)
     network_parameters = dict(n_clients=n_clients, seed=seed, n_servers=n_servers, alpha=alpha, beta=beta)
     env = model.Environment(network_parameters=network_parameters, vulnerability_library=dict([]),
                             identifiers=g.ENV_IDENTIFIERS, env_type="random_env", **kwargs)
@@ -88,6 +88,7 @@ def generate_graphs(num_environments, knows_reachability_range, knows_connectivi
         print("Added {} graphs".format(i+1))
         graphs.append(cyber_env)
         graphs_networks.append(env)
+
     return graphs, graphs_networks
 
 
